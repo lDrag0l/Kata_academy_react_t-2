@@ -45,7 +45,7 @@ function MovieItem(props) {
                 <p className='card__text'>
                     {formattedText}
                 </p>
-                <StarRating rating={formattedRate / 2} />
+                <StarRating rating={formattedRate} />
             </div>
         </div>
     )

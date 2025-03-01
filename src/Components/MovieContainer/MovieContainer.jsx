@@ -6,7 +6,7 @@ function MovieContainer(props) {
     if (!movies) {
         return <div>Loading...</div>;
     }
-    console.log(movies)
+
     return (
         <div className='movie-container'>
             {movies.map((movie) => {

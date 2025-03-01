@@ -1,7 +1,12 @@
-import { useEffect, useState } from 'react';
-import MovieService from './../../Services/index';
+import Header from '../Header';
+import FooterPagination from '../Pagination';
+import MovieService from './../../Services';
 import MovieContainer from './../MovieContainer'
 import './App.css'
+
+import { useEffect, useState } from 'react';
+
+
 function App() {
   const [movies, setMovies] = useState([]);
   const movieService = new MovieService();
@@ -15,11 +20,13 @@ function App() {
 
   useEffect(() => { fetchMovies() }, []);
 
+  if (movies.length === 0) return <div>Loading!!!</div>
+
   return (
     <div className='App'>
-      <input type="text" />
+      <Header />
       <MovieContainer movies={movies} />
-      <div>pag</div>
+      <FooterPagination />
     </div>
   );
 }

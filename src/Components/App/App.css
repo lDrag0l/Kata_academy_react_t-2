@@ -1,5 +1,11 @@
 .App {
     display: flex;
+    width: 100%;
     align-items: center;
     flex-direction: column;
+}
+
+.App__input {
+    width: 50%;
+    margin-bottom: 34px;
 }
