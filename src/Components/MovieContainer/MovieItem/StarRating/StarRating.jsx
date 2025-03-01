@@ -3,7 +3,6 @@ import './StarRating.css'
 const StarRating = ({ rating }) => {
     return (
         <div>
-
             <ConfigProvider
                 theme={{
                     components: {

@@ -1,5 +1,5 @@
 import Header from '../Header';
-import FooterPagination from '../Pagination';
+import FooterPagination from '../FooterPagination';
 import MovieService from './../../Services';
 import MovieContainer from './../MovieContainer'
 import './App.css'

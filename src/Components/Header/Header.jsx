@@ -1,5 +1,5 @@
-import HeaderInput from "../HeaderInput"
-import HeaderRadio from "../HeaderRadio/HeaderRadio"
+import HeaderInput from "./HeaderInput"
+import HeaderRadio from "./HeaderRadio/HeaderRadio"
 
 
 function Header() {

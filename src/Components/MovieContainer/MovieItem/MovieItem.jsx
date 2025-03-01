@@ -1,5 +1,5 @@
 import './MovieItem.css'
-import StarRating from '../StarRating';
+import StarRating from './StarRating';
 import { parse, format } from 'date-fns';
 
 
