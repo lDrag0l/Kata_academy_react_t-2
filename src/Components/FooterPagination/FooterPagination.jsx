@@ -1,8 +1,9 @@
 import { Pagination } from 'antd';
 import './FooterPagination.css'
-function FooterPagination() {
+function FooterPagination(props) {
+    let { onChangePage } = props
     return (
-        <Pagination align="center" defaultCurrent={1} defaultPageSize={20} showSizeChanger={false} total={100} />
+        <Pagination align="center" onChange={onChangePage} defaultCurrent={1} defaultPageSize={20} showSizeChanger={false} total={100} />
     )
 }
 

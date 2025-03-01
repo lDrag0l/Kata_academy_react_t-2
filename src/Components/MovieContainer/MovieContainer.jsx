@@ -1,4 +1,4 @@
-import MovieItem from './../MovieItem'
+import MovieItem from './MovieItem'
 import './MovieContainer.css'
 function MovieContainer(props) {
     const { movies } = props

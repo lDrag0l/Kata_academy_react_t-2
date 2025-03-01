@@ -1,7 +1,7 @@
 import './MovieItem.css'
 import StarRating from './StarRating';
 import { parse, format } from 'date-fns';
-
+import imageError from './notFindImage.jpg';
 
 function truncateText(text, maxLength) {
     if (text.length <= maxLength) {
@@ -23,10 +23,20 @@ function truncateText(text, maxLength) {
 
 function MovieItem(props) {
     const { movieTitle, movieText, movieRate, movieReleaseDate, movieImage } = props
+    let date
+    let formattedDate
+    let imageSrc
+    if (movieReleaseDate) {
+        date = parse(movieReleaseDate, 'yyyy-MM-dd', new Date());
+        formattedDate = format(date, 'MMMM d, yyyy');
+    }
 
-    const date = parse(movieReleaseDate, 'yyyy-MM-dd', new Date());
-
-    const formattedDate = format(date, 'MMMM d, yyyy');
+    if (movieImage) {
+        imageSrc = 'https://image.tmdb.org/t/p/w500' + movieImage
+    }
+    else {
+        imageSrc = imageError
+    }
 
     const formattedText = truncateText(movieText, 200)
 
@@ -34,7 +44,7 @@ function MovieItem(props) {
 
     return (
         <div className="movie-card card">
-            <img className='card__image' alt='card image' src={'https://image.tmdb.org/t/p/w500' + movieImage} />
+            <img className='card__image' alt='card image' src={imageSrc} />
             <div className='card__info'>
                 <div className='card__header'>
                     <h1 className='card__title'>{movieTitle}</h1>

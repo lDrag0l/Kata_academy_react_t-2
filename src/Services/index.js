@@ -1,5 +1,5 @@
 export default class MovieService {
-    _apiBase = 'https://api.themoviedb.org/3/search/movie?query=Harry&language=en-US&page=1';
+    _apiBase = 'https://api.themoviedb.org/3/search/movie?query=Harry&language=en-US&page=';
 
     options = {
         method: 'GET',
@@ -9,9 +9,10 @@ export default class MovieService {
         },
     };
 
-    async getMovies() {
+    async getMovies(page) {
+        const api = this._apiBase + page
         try {
-            const res = await fetch(this._apiBase, this.options);
+            const res = await fetch(api, this.options);
             if (!res.ok) {
                 throw new Error('Network response was not ok');
             }
