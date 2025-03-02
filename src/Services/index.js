@@ -1,5 +1,5 @@
 export default class MovieService {
-    _apiBase = 'https://api.themoviedb.org/3/search/movie?query=Harry&language=en-US&page=';
+    _apiBase = 'https://api.themoviedb.org/3/search/movie?query=';
 
     options = {
         method: 'GET',
@@ -9,8 +9,8 @@ export default class MovieService {
         },
     };
 
-    async getMovies(page) {
-        const api = this._apiBase + page
+    async getMovies(page, inputValue) {
+        const api = this._apiBase + inputValue + '&page=' + page
         try {
             const res = await fetch(api, this.options);
             if (!res.ok) {

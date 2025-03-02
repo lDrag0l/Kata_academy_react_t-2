@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import Header from '../Header';
 import FooterPagination from '../FooterPagination';
 import MovieContainer from './../MovieContainer'
-
+import useDebounce from './Debounce';
 import MovieService from './../../Services';
 
 import { Spin } from 'antd';
@@ -13,25 +13,40 @@ import './App.css'
 
 function App() {
   const [movies, setMovies] = useState([]);
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
   const [page, setPage] = useState(1)
-
+  const [inputValue, setInputValue] = useState('')
+  const [paginationState, setPaginationState] = useState(false)
 
   const movieService = new MovieService();
 
-  useEffect(() => { fetchMovies(page) }, [page]);
+  let debouncedInputValue = useDebounce(inputValue, 500)
 
-  const fetchMovies = async (page) => {
+  useEffect(() => { fetchMovies(page, debouncedInputValue) }, [page, debouncedInputValue]);
+
+  const fetchMovies = async (page, inputValue) => {
     try {
-      const result = await movieService.getMovies(page);
+      if (inputValue) {
+        setLoading(true)
+      }
+      const result = await movieService.getMovies(page, inputValue);
+
       if (result) {
         setMovies(result.results);
-        setLoading(false)
+      }
+
+      if (result.results.length !== 0) {
+        setPaginationState(true)
+      } else {
+        setPaginationState(false)
       }
     }
     catch (Error) {
-      onError(Error)
+      onError()
+    }
+    finally {
+      setLoading(false);
     }
   };
 
@@ -44,6 +59,10 @@ function App() {
     setPage(page)
   }
 
+  const onChangeInput = (e) => {
+    setInputValue(e.target.value)
+  }
+
   const hasDate = !(loading || error)
 
   const spinner = loading ? <Spin size="large" /> : null
@@ -52,12 +71,12 @@ function App() {
   const content = hasDate ?
     <>
       <MovieContainer movies={movies} />
-      <FooterPagination onChangePage={onChangePage} />
+      <FooterPagination page={page} paginationState={paginationState} onChangePage={onChangePage} />
     </> : null;
 
   return (
     <div className='App'>
-      <Header />
+      <Header onChangeInput={onChangeInput} />
       {errorMessage}
       {spinner}
       {content}

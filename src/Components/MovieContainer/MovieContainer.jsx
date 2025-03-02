@@ -3,10 +3,6 @@ import './MovieContainer.css'
 function MovieContainer(props) {
     const { movies } = props
 
-    if (!movies) {
-        return <div>Loading...</div>;
-    }
-
     return (
         <div className='movie-container'>
             {movies.map((movie) => {

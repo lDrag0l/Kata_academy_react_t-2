@@ -2,11 +2,12 @@ import HeaderInput from "./HeaderInput"
 import HeaderRadio from "./HeaderRadio/HeaderRadio"
 
 
-function Header() {
+function Header(props) {
+    const { onChangeInput } = props
     return (
         <>
             <HeaderRadio />
-            <HeaderInput />
+            <HeaderInput onChangeInput={onChangeInput} />
         </>
     )
 }

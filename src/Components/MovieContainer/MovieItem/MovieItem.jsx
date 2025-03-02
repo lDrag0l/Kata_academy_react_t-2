@@ -22,7 +22,7 @@ function truncateText(text, maxLength) {
 }
 
 function MovieItem(props) {
-    const { movieTitle, movieText, movieRate, movieReleaseDate, movieImage } = props
+    const { movieTitle, movieText, movieRate, movieReleaseDate, movieImage = imageError } = props
     let date
     let formattedDate
     let imageSrc
@@ -34,9 +34,6 @@ function MovieItem(props) {
     if (movieImage) {
         imageSrc = 'https://image.tmdb.org/t/p/w500' + movieImage
     }
-    else {
-        imageSrc = imageError
-    }
 
     const formattedText = truncateText(movieText, 200)
 
@@ -44,7 +41,7 @@ function MovieItem(props) {
 
     return (
         <div className="movie-card card">
-            <img className='card__image' alt='card image' src={imageSrc} />
+            <img className='card__image' alt='card image' src={imageSrc || imageError} />
             <div className='card__info'>
                 <div className='card__header'>
                     <h1 className='card__title'>{movieTitle}</h1>
