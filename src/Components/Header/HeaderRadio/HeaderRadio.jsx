@@ -1,8 +1,10 @@
 import { Tabs } from 'antd';
 
-const HeaderRadio = () => {
+const HeaderRadio = ({ onChangeTab = () => { } }) => {
+
     return (
         <Tabs
+            onChange={onChangeTab}
             defaultActiveKey="1"
             centered
             items={Array.from({

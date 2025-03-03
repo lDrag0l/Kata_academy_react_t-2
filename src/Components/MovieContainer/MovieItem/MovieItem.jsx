@@ -1,7 +1,12 @@
 import './MovieItem.css'
-import StarRating from './StarRating';
-import { parse, format } from 'date-fns';
+
 import imageError from './notFindImage.jpg';
+import StarRating from './StarRating';
+
+import { parse, format } from 'date-fns';
+
+import { useGenres } from '../../../Contexts/genresContext';
+import Genres from './Genres';
 
 function truncateText(text, maxLength) {
     if (text.length <= maxLength) {
@@ -21,11 +26,19 @@ function truncateText(text, maxLength) {
     return truncated;
 }
 
-function MovieItem(props) {
-    const { movieTitle, movieText, movieRate, movieReleaseDate, movieImage = imageError } = props
+function MovieItem({ movieTitle = '', movieText = '', movieRate = 0, movieReleaseDate = '', movieImage = imageError, movieGenres = [] }) {
+    const { genres } = useGenres()
+
+    const genreNames = movieGenres.map(id => {
+        const genre = genres.find(genre => genre.id === id);
+        return genre.name
+    })
+
+
     let date
     let formattedDate
     let imageSrc
+
     if (movieReleaseDate) {
         date = parse(movieReleaseDate, 'yyyy-MM-dd', new Date());
         formattedDate = format(date, 'MMMM d, yyyy');
@@ -48,11 +61,15 @@ function MovieItem(props) {
                     <div className='card__score'>{formattedRate}</div>
                 </div>
                 <div className='card__release'>{formattedDate}</div>
-                <div className='card__genres'>Action</div>
+                <div className='card__genres-wrapper'>
+                    {genreNames.map((text) => {
+                        return <Genres key={text} genreText={text} />
+                    })}
+                </div>
                 <p className='card__text'>
                     {formattedText}
                 </p>
-                <StarRating rating={formattedRate} />
+                <StarRating />
             </div>
         </div>
     )

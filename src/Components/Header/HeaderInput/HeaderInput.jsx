@@ -1,11 +1,9 @@
 import { Input } from 'antd';
-import { useState } from 'react';
 
-const HeaderInput = (props) => {
-    const { onChangeInput } = props
+const HeaderInput = ({ onChangeInput = () => { }, inputValue = '' }) => {
     return (
         <div className='App__input' >
-            <Input onInput={onChangeInput} placeholder="Type to search..." />
+            <Input defaultValue={inputValue} onInput={onChangeInput} placeholder="Type to search..." />
         </div>
     )
 }

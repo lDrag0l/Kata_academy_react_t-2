@@ -1,6 +1,6 @@
 import { ConfigProvider, Rate } from 'antd';
-import './StarRating.css'
-const StarRating = ({ rating }) => {
+
+const StarRating = () => {
     return (
         <div>
             <ConfigProvider
@@ -13,7 +13,7 @@ const StarRating = ({ rating }) => {
                     },
                 }}
             >
-                <Rate count={10} disabled allowHalf defaultValue={rating} style={{ position: 'absolute', bottom: '15px' }} />
+                <Rate count={10} allowHalf style={{ position: 'absolute', bottom: '15px' }} />
             </ConfigProvider>
         </div>
     );
