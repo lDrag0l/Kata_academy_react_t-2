@@ -56,6 +56,7 @@ function MovieItem({ movieId = 0, movieTitle = '', movieText = '', movieRate = 0
             <img className='card__image' alt='card image' src={imageSrc || imageError} />
             <div className='card__info'>
                 <div className='card__header'>
+                    <img className='card__image--small' alt='card image' src={imageSrc || imageError} />
                     <h1 className='card__title'>{movieTitle}</h1>
                     <div className='card__score'>{formattedRate}</div>
                 </div>

@@ -1,5 +1,6 @@
 import MovieItem from './MovieItem'
 import './MovieContainer.css'
+
 function MovieContainer({ movies = [] }) {
     return (
         <div className='movie-container'>
@@ -13,7 +14,6 @@ function MovieContainer({ movies = [] }) {
                     movieText={movie.overview}
                     movieRate={movie.vote_average}
                     movieReleaseDate={movie.release_date}
-
                 />)
             })}
         </div>

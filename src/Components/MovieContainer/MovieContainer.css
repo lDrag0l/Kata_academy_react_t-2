@@ -3,5 +3,11 @@
     justify-content: center;
     gap: 36px;
     flex-wrap: wrap;
-    width: 50%;
+    width: 1000px;
+}
+
+@media (max-width: 950px) {
+    .movie-container {
+        width: 100%;
+    }
 }

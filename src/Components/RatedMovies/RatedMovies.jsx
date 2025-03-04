@@ -4,6 +4,7 @@ import MovieItem from "../MovieContainer/MovieItem";
 import MovieService from './../../Services';
 
 import { Alert, Spin } from "antd";
+import FooterPagination from "../FooterPagination";
 
 const RatedMovies = () => {
     const [ratedMovies, setRatedMovies] = useState([]);
@@ -31,7 +32,6 @@ const RatedMovies = () => {
         setLoading(true);
         try {
             const response = await movieService.getRatedMovies();
-
             if (!response.success) {
                 setHasData(false);
                 setError(true);
@@ -50,9 +50,10 @@ const RatedMovies = () => {
         }
     };
 
+
     const readyToPush = !(loading || error);
     const spinner = loading ? <Spin size="large" /> : null;
-    const alertMessage = error ? <Alert message="No saved movies" type="info" /> : null;
+    const alertMessage = error ? <Alert message="Something went wrong" type="info" /> : null;
 
     let content;
 

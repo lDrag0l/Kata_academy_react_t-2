@@ -91,7 +91,6 @@ export default class MovieService {
 
         try {
             const res = await fetch(api, this.options);
-
             if (!res.ok) {
                 return {
                     success: false,
