@@ -26,14 +26,13 @@ function truncateText(text, maxLength) {
     return truncated;
 }
 
-function MovieItem({ movieTitle = '', movieText = '', movieRate = 0, movieReleaseDate = '', movieImage = imageError, movieGenres = [] }) {
+function MovieItem({ movieId = 0, movieTitle = '', movieText = '', movieRate = 0, movieReleaseDate = '', movieImage = imageError, movieGenres = [], movieClickedRate = 0 }) {
     const { genres } = useGenres()
 
     const genreNames = movieGenres.map(id => {
         const genre = genres.find(genre => genre.id === id);
         return genre.name
     })
-
 
     let date
     let formattedDate
@@ -69,7 +68,7 @@ function MovieItem({ movieTitle = '', movieText = '', movieRate = 0, movieReleas
                 <p className='card__text'>
                     {formattedText}
                 </p>
-                <StarRating />
+                <StarRating movieClickedRate={movieClickedRate} movieId={movieId} />
             </div>
         </div>
     )

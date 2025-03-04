@@ -1,6 +1,27 @@
 import { ConfigProvider, Rate } from 'antd';
+import MovieService from './../../../../Services'
 
-const StarRating = () => {
+const StarRating = ({ movieId = 0, movieClickedRate = 0 }) => {
+    const movieService = new MovieService()
+    const addRateToMovie = async (rate) => {
+        if (!movieClickedRate) {
+            try {
+                const response = await movieService.addToRatedMovies(movieId, rate)
+
+                if (!response.success) {
+                    console.log('Error')
+                }
+            }
+            catch (error) {
+                console.log(error)
+            }
+        }
+
+    }
+    const rateElem = movieClickedRate ?
+        <Rate disabled value={movieClickedRate} count={10} allowHalf style={{ position: 'absolute', bottom: '15px' }} /> :
+        <Rate onChange={addRateToMovie} count={10} allowHalf style={{ position: 'absolute', bottom: '15px' }} />
+
     return (
         <div>
             <ConfigProvider
@@ -13,7 +34,7 @@ const StarRating = () => {
                     },
                 }}
             >
-                <Rate count={10} allowHalf style={{ position: 'absolute', bottom: '15px' }} />
+                {rateElem}
             </ConfigProvider>
         </div>
     );

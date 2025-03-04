@@ -8,9 +8,7 @@ export default class MovieService {
             Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1MmQ2OTdjMGNkN2Q0NTcxNDkxMDM3YjQ1NDIyNDE1MyIsIm5iZiI6MTc0MDU4MjA5MC40MTEsInN1YiI6IjY3YmYyY2NhMTBiNDY1ZGEwMjU2NDMzMCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.iwe0pq4CFWA53k-hU70p8v1w2J84aKo2-Z0CD8e9GGI'
         },
     };
-    postOptions = {
 
-    }
 
     async getMovies(page, inputValue) {
         const api = this._apiBase + inputValue + '&page=' + page
@@ -42,11 +40,28 @@ export default class MovieService {
         }
     }
 
-    async addToRatedMovies(id) {
-        const api = `https://api.themoviedb.org/3/movie/${id}/rating`//not ready
+    async addToRatedMovies(id, rating) {
+        const guestSessionId = localStorage.getItem('guest_session_id')
+        const postOptions = {
+            method: 'POST',
+            headers: {
+                accept: 'application/json',
+                'Content-Type': 'application/json;charset=utf-8',
+                Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1MmQ2OTdjMGNkN2Q0NTcxNDkxMDM3YjQ1NDIyNDE1MyIsIm5iZiI6MTc0MDU4MjA5MC40MTEsInN1YiI6IjY3YmYyY2NhMTBiNDY1ZGEwMjU2NDMzMCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.iwe0pq4CFWA53k-hU70p8v1w2J84aKo2-Z0CD8e9GGI'
+            },
+            body: `{"value":${rating}}`
+        }
+
+        const api = `https://api.themoviedb.org/3/movie/${id}/rating?guest_session_id=${guestSessionId}`
 
         try {
-            const res = await fetch(api)
+            const res = await fetch(api, postOptions)
+
+            if (!res.ok) console.log('Post query error')
+
+            const body = await res.json()
+
+            return body
         }
 
         catch (error) {
@@ -67,6 +82,33 @@ export default class MovieService {
 
         catch (error) {
             console.error('Get genres error', error)
+        }
+    }
+
+    async getRatedMovies() {
+        const guestSessionId = localStorage.getItem('guest_session_id');
+        const api = `https://api.themoviedb.org/3/guest_session/${guestSessionId}/rated/movies?language=en-US&page=1&sort_by=created_at.desc`;
+
+        try {
+            const res = await fetch(api, this.options);
+
+            if (!res.ok) {
+                return {
+                    success: false,
+                };
+            }
+
+            const body = await res.json();
+
+            return {
+                success: true,
+                data: body
+            };
+
+        } catch (error) {
+            return {
+                success: false
+            };
         }
     }
 }

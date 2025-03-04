@@ -24,7 +24,6 @@ function App() {
   const [tabState, setTabState] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const { setGenres } = useGenres();
-
   const movieService = new MovieService();
   let debouncedInputValue = useDebounce(inputValue, 500);
 
@@ -102,6 +101,7 @@ function App() {
       setLoading(false);
     }
   };
+
   const onError = () => {
     setError(true);
     setLoading(false);
@@ -118,6 +118,7 @@ function App() {
   const onChangeTab = (key) => {
     setTabState(key);
   };
+
   const onChangeResult = (result) => {
     setMovies(result.results);
     setTotalPages(result.total_pages)

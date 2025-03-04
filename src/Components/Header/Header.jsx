@@ -2,7 +2,6 @@ import HeaderInput from "./HeaderInput";
 import HeaderRadio from "./HeaderRadio/HeaderRadio";
 
 function Header({ onChangeInput = () => { }, onChangeTab = () => { }, tabState = 0, inputValue = '' }) {
-
     return (
         <>
             <HeaderRadio onChangeTab={onChangeTab} />

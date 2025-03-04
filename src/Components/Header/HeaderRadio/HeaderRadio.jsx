@@ -1,9 +1,9 @@
 import { Tabs } from 'antd';
 
 const HeaderRadio = ({ onChangeTab = () => { } }) => {
-
     return (
         <Tabs
+            destroyInactiveTabPane
             onChange={onChangeTab}
             defaultActiveKey="1"
             centered

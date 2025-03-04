@@ -6,6 +6,7 @@ function MovieContainer({ movies = [] }) {
             {movies.map((movie) => {
                 return (<MovieItem
                     key={movie.id}
+                    movieId={movie.id}
                     movieGenres={movie.genre_ids}
                     movieImage={movie.poster_path}
                     movieTitle={movie.original_title}
