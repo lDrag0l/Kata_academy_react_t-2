@@ -4,7 +4,6 @@ import MovieItem from "../MovieContainer/MovieItem";
 import MovieService from './../../Services';
 
 import { Alert, Spin } from "antd";
-import FooterPagination from "../FooterPagination";
 
 const RatedMovies = () => {
     const [ratedMovies, setRatedMovies] = useState([]);
@@ -14,6 +13,34 @@ const RatedMovies = () => {
     const movieService = new MovieService();
 
     useEffect(() => {
+        const getRatedMovies = async () => {
+
+            const guestSessionId = localStorage.getItem('guest_session_id');
+            if (!guestSessionId) {
+                return;
+            }
+
+            setLoading(true);
+            try {
+                const response = await movieService.getRatedMovies();
+                if (!response.success) {
+                    setHasData(false);
+                    setError(true);
+                } else {
+                    setHasData(true);
+                    setRatedMovies(response.data.results);
+                }
+            }
+
+            catch (error) {
+                setError(true);
+            }
+
+            finally {
+                setLoading(false);
+            }
+        };
+
         const fetchRatedMovies = async () => {
             await getRatedMovies();
         };
@@ -21,34 +48,6 @@ const RatedMovies = () => {
         fetchRatedMovies();
     }, []);
 
-    const getRatedMovies = async () => {
-
-        const guestSessionId = localStorage.getItem('guest_session_id');
-        if (!guestSessionId) {
-            createGuestSession();
-            return;
-        }
-
-        setLoading(true);
-        try {
-            const response = await movieService.getRatedMovies();
-            if (!response.success) {
-                setHasData(false);
-                setError(true);
-            } else {
-                setHasData(true);
-                setRatedMovies(response.data.results);
-            }
-        }
-
-        catch (error) {
-            setError(true);
-        }
-
-        finally {
-            setLoading(false);
-        }
-    };
 
 
     const readyToPush = !(loading || error);

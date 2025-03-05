@@ -1,4 +1,5 @@
 import { Tabs } from 'antd';
+import PropTypes from 'prop-types';
 
 const HeaderRadio = ({ onChangeTab = () => { } }) => {
     return (
@@ -22,3 +23,8 @@ const HeaderRadio = ({ onChangeTab = () => { } }) => {
 }
 
 export default HeaderRadio
+
+
+HeaderRadio.propTypes = {
+    onChangeTab: PropTypes.func
+};

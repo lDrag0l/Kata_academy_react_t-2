@@ -1,4 +1,5 @@
 import { ConfigProvider, Rate } from 'antd';
+import PropTypes from 'prop-types';
 import MovieService from './../../../../Services'
 
 const StarRating = ({ movieId = 0, movieClickedRate = 0 }) => {
@@ -41,3 +42,8 @@ const StarRating = ({ movieId = 0, movieClickedRate = 0 }) => {
 };
 
 export default StarRating
+
+StarRating.propTypes = {
+    movieId: PropTypes.number,
+    movieClickedRate: PropTypes.number
+};

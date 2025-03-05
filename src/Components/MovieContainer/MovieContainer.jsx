@@ -1,5 +1,6 @@
 import MovieItem from './MovieItem'
 import './MovieContainer.css'
+import PropTypes from 'prop-types';
 
 function MovieContainer({ movies = [] }) {
     return (
@@ -21,3 +22,7 @@ function MovieContainer({ movies = [] }) {
 }
 
 export default MovieContainer
+
+MovieContainer.propTypes = {
+    movies: PropTypes.array
+};

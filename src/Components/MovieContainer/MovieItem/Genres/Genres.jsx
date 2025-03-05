@@ -1,4 +1,5 @@
 import './Genres.css'
+import PropTypes from 'prop-types';
 
 const Genres = ({ genreText = '' }) => {
     return (
@@ -9,3 +10,7 @@ const Genres = ({ genreText = '' }) => {
 }
 
 export default Genres
+
+Genres.propTypes = {
+    genreText: PropTypes.string
+};

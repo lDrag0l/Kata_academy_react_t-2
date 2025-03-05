@@ -1,4 +1,5 @@
 import { Input } from 'antd';
+import PropTypes from 'prop-types';
 
 const HeaderInput = ({ onChangeInput = () => { }, inputValue = '' }) => {
     return (
@@ -9,3 +10,11 @@ const HeaderInput = ({ onChangeInput = () => { }, inputValue = '' }) => {
 }
 
 export default HeaderInput
+
+
+HeaderInput.propTypes = {
+    onChangeInput: PropTypes.func,
+    inputValue: PropTypes.string
+};
+
+

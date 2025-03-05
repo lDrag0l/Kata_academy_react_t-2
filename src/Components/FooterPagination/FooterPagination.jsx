@@ -1,4 +1,5 @@
 import { Pagination } from 'antd';
+import PropTypes from 'prop-types';
 import './FooterPagination.css'
 
 function FooterPagination({ onChangePage = () => { }, paginationState = false, page = 0, totalPages = 0 }) {
@@ -11,3 +12,11 @@ function FooterPagination({ onChangePage = () => { }, paginationState = false, p
 }
 
 export default FooterPagination
+
+FooterPagination.propTypes = {
+    onChangePage: PropTypes.func,
+    paginationState: PropTypes.bool,
+    page: PropTypes.number,
+    totalPages: PropTypes.number,
+};
+

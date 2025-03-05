@@ -46,7 +46,6 @@
     right: 9px;
     font-size: 12px;
     padding: 5px;
-    border: 2px solid #E9D100;
     border-radius: 50%;
 }
 
@@ -89,15 +88,15 @@
     }
 
     .card__release {
-        transform: translate(80px, -60px);
+        transform: translate(80px, -40px);
     }
 
     .card__genres-wrapper {
-        transform: translate(80px, -60px);
+        transform: translate(80px, -30px);
     }
 
     .card__text {
-        transform: translateY(-50px);
+        transform: translateY(-30px);
     }
 
 }
