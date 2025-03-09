@@ -58,10 +58,14 @@ function App() {
         } while (currentPage <= totalPages);
 
         setRatedMovies(allRatedMovies);
-      } catch (error) {
+      }
+
+      catch (error) {
         setError(true);
         console.log(error);
-      } finally {
+      }
+
+      finally {
         setLoading(false);
       }
     };
