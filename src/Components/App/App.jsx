@@ -24,11 +24,12 @@ function App() {
   const [totalPages, setTotalPages] = useState(0);
   const { setGenres } = useGenres();
   const [ratedMovies, setRatedMovies] = useState([]);
+  const [haveRatedMovies, setHaveRatedMovies] = useState(false)
   const movieService = new MovieService();
   let debouncedInputValue = useDebounce(inputValue, 500);
 
   useEffect(() => {
-    const getRatedMovies = async () => {
+    const fetchData = async () => {
       const guestSessionId = localStorage.getItem('guest_session_id');
 
       if (!guestSessionId) {
@@ -38,45 +39,48 @@ function App() {
       setLoading(true);
       setError(false);
 
-      let allRatedMovies = [];
-      let currentPage = 1;
-
       try {
-        let totalPages = 1;
-        do {
-          const response = await movieService.getRatedMovies(currentPage);
+        if (haveRatedMovies) {
+          let allRatedMovies = [];
+          let currentPage = 1;
+          let totalPages = 1;
 
-          if (response.success && response.data) {
-            allRatedMovies = [...allRatedMovies, ...response.data.results];
-            totalPages = response.data.total_pages;
-          } else {
-            setError(true);
-            break;
-          }
+          do {
+            const response = await movieService.getRatedMovies(currentPage);
 
-          currentPage += 1;
-        } while (currentPage <= totalPages);
+            if (response.success && response.data) {
+              allRatedMovies = [...allRatedMovies, ...response.data.results];
+              totalPages = response.data.total_pages;
+            } else {
+              setError(true);
+              return;
+            }
 
-        setRatedMovies(allRatedMovies);
-      }
+            currentPage += 1;
+          } while (currentPage <= totalPages);
 
-      catch (error) {
+          setRatedMovies(allRatedMovies);
+        }
+        const result = await movieService.getMovies(page, debouncedInputValue);
+
+        if (result) {
+          onChangeResult(result);
+        }
+
+        if (debouncedInputValue && result.results.length === 0) {
+          setError(true);
+        }
+
+      } catch (error) {
         setError(true);
         console.log(error);
-      }
-
-      finally {
+      } finally {
         setLoading(false);
       }
     };
 
-    getRatedMovies();
-  }, []);
-
-
-  useEffect(() => {
-    fetchMovies(page, debouncedInputValue);
-  }, [page, debouncedInputValue]);
+    fetchData();
+  }, [page, debouncedInputValue, tabState]);
 
   useEffect(() => {
     createGuestSession()
@@ -125,35 +129,6 @@ function App() {
     }
   };
 
-  const fetchMovies = async (page, inputValue) => {
-    setLoading(true);
-    setError(false)
-
-    try {
-      const result = await movieService.getMovies(page, inputValue);
-
-      if (result) {
-        onChangeResult(result)
-      }
-
-      if (inputValue && result.results.length === 0) setError(true)
-
-    }
-
-    catch (Error) {
-      onError();
-    }
-
-    finally {
-      setLoading(false);
-    }
-  };
-
-  const onError = () => {
-    setError(true);
-    setLoading(false);
-  };
-
   const onChangePage = (page) => {
     setPage(page);
   };
@@ -164,11 +139,6 @@ function App() {
 
   const onChangeTab = (key) => {
     setTabState(key);
-
-    if (key === 0) {
-      const updatedMovies = updateMoviesWithRatings(movies, ratedMovies);
-      setMovies(updatedMovies);
-    }
   };
 
   const onChangeResult = (result) => {
@@ -191,6 +161,10 @@ function App() {
     });
   };
 
+  const onFirstClickRateMovie = () => {
+    setHaveRatedMovies(true)
+  }
+
   const hasData = !(loading || error);
   const spinner = loading ? <Spin size="large" /> : null;
   const errorMessage = error ? <Alert message="Server request error" type="error" /> : null;
@@ -199,7 +173,7 @@ function App() {
     if (tabState === 0) {
       return (
         <>
-          <MovieContainer movies={movies} />
+          <MovieContainer onFirstClickRateMovie={onFirstClickRateMovie} movies={movies} />
           <FooterPagination totalPages={totalPages} page={page} isPaginationVisible={isPaginationVisible} onChangePage={onChangePage} />
         </>
       );

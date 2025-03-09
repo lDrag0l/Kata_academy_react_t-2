@@ -2,7 +2,7 @@ import MovieItem from './MovieItem'
 import './MovieContainer.css'
 import PropTypes from 'prop-types';
 
-function MovieContainer({ movies = [] }) {
+function MovieContainer({ movies = [], onFirstClickRateMovie = () => { } }) {
     return (
         <div className='movie-container'>
             {movies.map((movie) => {
@@ -16,6 +16,7 @@ function MovieContainer({ movies = [] }) {
                     movieRate={movie.vote_average}
                     movieReleaseDate={movie.release_date}
                     movieClickedRate={movie.movieClickedRate}
+                    onFirstClickRateMovie={onFirstClickRateMovie}
                 />)
             })}
         </div>
@@ -25,5 +26,6 @@ function MovieContainer({ movies = [] }) {
 export default MovieContainer
 
 MovieContainer.propTypes = {
-    movies: PropTypes.array
+    movies: PropTypes.array,
+    onFirstClickRateMovie: PropTypes.func
 };

@@ -2,11 +2,12 @@ import { ConfigProvider, Rate } from 'antd';
 import PropTypes from 'prop-types';
 import MovieService from './../../../../Services'
 
-const StarRating = ({ movieId = 0, movieClickedRate = 0 }) => {
+const StarRating = ({ movieId = 0, movieClickedRate = 0, onFirstClickRateMovie = () => { } }) => {
     const movieService = new MovieService()
 
     const addRateToMovie = async (rate) => {
         if (!movieClickedRate) {
+            onFirstClickRateMovie()
             try {
                 const response = await movieService.addToRatedMovies(movieId, rate)
 
@@ -47,5 +48,6 @@ export default StarRating
 
 StarRating.propTypes = {
     movieId: PropTypes.number,
-    movieClickedRate: PropTypes.number
+    movieClickedRate: PropTypes.number,
+    onFirstClickRateMovie: PropTypes.func
 };

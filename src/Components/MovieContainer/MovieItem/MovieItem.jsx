@@ -11,7 +11,7 @@ import Genre from './Genre';
 import { truncateText } from './../../../Utils/MovieUtils'
 
 
-function MovieItem({ movieId = 0, movieTitle = '', movieText = '', movieRate = 0, movieReleaseDate = '', movieImage = imageError, movieGenres = [], movieClickedRate = 0 }) {
+function MovieItem({ movieId = 0, movieTitle = '', movieText = '', movieRate = 0, movieReleaseDate = '', movieImage = imageError, movieGenres = [], movieClickedRate = 0, onFirstClickRateMovie = () => { } }) {
     const { genres } = useGenres()
 
     const genreNames = movieGenres.map(id => {
@@ -73,7 +73,7 @@ function MovieItem({ movieId = 0, movieTitle = '', movieText = '', movieRate = 0
                 <p className='card__text'>
                     {formattedText}
                 </p>
-                <StarRating movieClickedRate={movieClickedRate} movieId={movieId} />
+                <StarRating onFirstClickRateMovie={onFirstClickRateMovie} movieClickedRate={movieClickedRate} movieId={movieId} />
             </div>
         </div >
     )
@@ -89,5 +89,6 @@ MovieItem.propTypes = {
     movieReleaseDate: PropTypes.string,
     movieImage: PropTypes.string,
     movieGenres: PropTypes.array,
-    movieClickedRate: PropTypes.number
+    movieClickedRate: PropTypes.number,
+    onFirstClickRateMovie: PropTypes.func
 };
