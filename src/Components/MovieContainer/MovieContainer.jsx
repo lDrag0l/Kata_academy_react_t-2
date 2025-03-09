@@ -15,6 +15,7 @@ function MovieContainer({ movies = [] }) {
                     movieText={movie.overview}
                     movieRate={movie.vote_average}
                     movieReleaseDate={movie.release_date}
+                    movieClickedRate={movie.movieClickedRate}
                 />)
             })}
         </div>

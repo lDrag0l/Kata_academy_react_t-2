@@ -85,9 +85,9 @@ export default class MovieService {
         }
     }
 
-    async getRatedMovies() {
+    async getRatedMovies(page) {
         const guestSessionId = localStorage.getItem('guest_session_id');
-        const api = `https://api.themoviedb.org/3/guest_session/${guestSessionId}/rated/movies?language=en-US&page=1&sort_by=created_at.desc`;
+        const api = `https://api.themoviedb.org/3/guest_session/${guestSessionId}/rated/movies?language=en-US&page=${page}&sort_by=created_at.desc`;
 
         try {
             const res = await fetch(api, this.options);
@@ -98,6 +98,7 @@ export default class MovieService {
             }
 
             const body = await res.json();
+            let totalPages = body.totalPages
 
             return {
                 success: true,

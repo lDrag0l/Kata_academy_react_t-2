@@ -4,6 +4,7 @@ import MovieService from './../../../../Services'
 
 const StarRating = ({ movieId = 0, movieClickedRate = 0 }) => {
     const movieService = new MovieService()
+
     const addRateToMovie = async (rate) => {
         if (!movieClickedRate) {
             try {
@@ -19,6 +20,7 @@ const StarRating = ({ movieId = 0, movieClickedRate = 0 }) => {
         }
 
     }
+
     const rateElem = movieClickedRate ?
         <Rate disabled value={movieClickedRate} count={10} allowHalf style={{ position: 'absolute', bottom: '15px' }} /> :
         <Rate onChange={addRateToMovie} count={10} allowHalf style={{ position: 'absolute', bottom: '15px', right: '20px' }} />

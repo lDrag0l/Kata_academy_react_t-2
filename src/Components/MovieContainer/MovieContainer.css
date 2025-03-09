@@ -6,7 +6,7 @@
     width: 1000px;
 }
 
-@media (max-width: 950px) {
+@media (max-width: 1050px) {
     .movie-container {
         width: 100%;
     }

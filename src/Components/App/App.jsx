@@ -3,12 +3,11 @@ import { useEffect, useState } from 'react';
 import Header from '../Header';
 import FooterPagination from '../FooterPagination';
 import MovieContainer from './../MovieContainer';
-import useDebounce from './Debounce';
+import useDebounce from './../../Utils/MovieUtils';
 import MovieService from './../../Services';
 import RatedMovies from '../RatedMovies';
 
-import { Spin } from 'antd';
-import { Alert } from 'antd';
+import { Alert, Spin } from 'antd';
 
 import './App.css';
 
@@ -20,12 +19,56 @@ function App() {
   const [error, setError] = useState(false);
   const [page, setPage] = useState(1);
   const [inputValue, setInputValue] = useState('');
-  const [paginationState, setPaginationState] = useState(false);
+  const [isPaginationVisible, setPaginationStateVisible] = useState(false);
   const [tabState, setTabState] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const { setGenres } = useGenres();
+  const [ratedMovies, setRatedMovies] = useState([]);
   const movieService = new MovieService();
   let debouncedInputValue = useDebounce(inputValue, 500);
+
+  useEffect(() => {
+    const getRatedMovies = async () => {
+      const guestSessionId = localStorage.getItem('guest_session_id');
+
+      if (!guestSessionId) {
+        return;
+      }
+
+      setLoading(true);
+      setError(false);
+
+      let allRatedMovies = [];
+      let currentPage = 1;
+
+      try {
+        let totalPages = 1;
+        do {
+          const response = await movieService.getRatedMovies(currentPage);
+
+          if (response.success && response.data) {
+            allRatedMovies = [...allRatedMovies, ...response.data.results];
+            totalPages = response.data.total_pages;
+          } else {
+            setError(true);
+            break;
+          }
+
+          currentPage += 1;
+        } while (currentPage <= totalPages);
+
+        setRatedMovies(allRatedMovies);
+      } catch (error) {
+        setError(true);
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getRatedMovies();
+  }, []);
+
 
   useEffect(() => {
     fetchMovies(page, debouncedInputValue);
@@ -117,13 +160,32 @@ function App() {
 
   const onChangeTab = (key) => {
     setTabState(key);
+
+    if (key === 0) {
+      const updatedMovies = updateMoviesWithRatings(movies, ratedMovies);
+      setMovies(updatedMovies);
+    }
   };
 
   const onChangeResult = (result) => {
-    setMovies(result.results);
-    setTotalPages(result.total_pages)
-    setPaginationState(result.results.length !== 0);
+    const updatedMovies = updateMoviesWithRatings(result.results, ratedMovies);
+    setMovies(updatedMovies);
+
+    setTotalPages(result.total_results)
+    setPaginationStateVisible(result.results.length !== 0);
   }
+
+  const updateMoviesWithRatings = (movies, ratedMovies) => {
+    const ratedMovieMap = new Map(ratedMovies.map(movie => [movie.id, movie.rating]));
+
+    return movies.map(movie => {
+      const rating = ratedMovieMap.get(movie.id);
+      return rating !== undefined ? {
+        ...movie,
+        movieClickedRate: rating,
+      } : movie;
+    });
+  };
 
   const hasData = !(loading || error);
   const spinner = loading ? <Spin size="large" /> : null;
@@ -134,7 +196,7 @@ function App() {
       return (
         <>
           <MovieContainer movies={movies} />
-          <FooterPagination totalPages={totalPages} page={page} paginationState={paginationState} onChangePage={onChangePage} />
+          <FooterPagination totalPages={totalPages} page={page} isPaginationVisible={isPaginationVisible} onChangePage={onChangePage} />
         </>
       );
     } else if (tabState === 1) {

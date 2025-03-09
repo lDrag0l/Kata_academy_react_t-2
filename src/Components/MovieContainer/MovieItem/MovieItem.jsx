@@ -7,25 +7,9 @@ import { parse, format } from 'date-fns';
 import PropTypes from 'prop-types';
 
 import { useGenres } from '../../../Contexts/genresContext';
-import Genres from './Genres';
+import Genre from './Genre';
+import { truncateText } from './../../../Utils/MovieUtils'
 
-function truncateText(text, maxLength) {
-    if (text.length <= maxLength) {
-        return text;
-    }
-
-    let truncated = text.substring(0, maxLength);
-
-    const lastSpaceIndex = truncated.lastIndexOf(' ');
-
-    if (lastSpaceIndex !== -1) {
-        truncated = truncated.substring(0, lastSpaceIndex) + '...';
-    } else {
-        truncated += '...';
-    }
-
-    return truncated;
-}
 
 function MovieItem({ movieId = 0, movieTitle = '', movieText = '', movieRate = 0, movieReleaseDate = '', movieImage = imageError, movieGenres = [], movieClickedRate = 0 }) {
     const { genres } = useGenres()
@@ -83,7 +67,7 @@ function MovieItem({ movieId = 0, movieTitle = '', movieText = '', movieRate = 0
                 <div className='card__release'>{formattedDate}</div>
                 <div className='card__genres-wrapper'>
                     {genreNames.map((text) => {
-                        return <Genres key={text} genreText={text} />
+                        return <Genre key={text} genreText={text} />
                     })}
                 </div>
                 <p className='card__text'>

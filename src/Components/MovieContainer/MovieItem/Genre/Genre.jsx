@@ -1,4 +1,4 @@
-import './Genres.css'
+import './Genre.css'
 import PropTypes from 'prop-types';
 
 const Genres = ({ genreText = '' }) => {
