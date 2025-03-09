@@ -33,6 +33,7 @@ export default class MovieService {
             if (!res.ok) console.log('Guest session response error')
 
             const body = await res.json()
+
             return body
 
         } catch (error) {
